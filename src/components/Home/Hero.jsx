@@ -61,10 +61,13 @@ export default function Hero() {
 
         <h1
           data-hero-item
-          className="mt-12 max-w-[70rem] text-[clamp(2.6rem,10vw,8.5rem)] font-light uppercase leading-[0.92] tracking-[-0.065em] md:mt-20"
+          className="hero-display mt-12 max-w-[90rem] md:mt-20"
         >
           <span className="line-mask block">
-            <span className="inline-block" data-hero-line>I turn ideas into</span>
+            <span className="inline-block" data-hero-line>I turn</span>
+          </span>
+          <span className="line-mask block">
+            <span className="inline-block" data-hero-line>ideas into</span>
           </span>
           <span className="line-mask block text-accent">
             <span className="inline-block" data-hero-line>visual stories.</span>

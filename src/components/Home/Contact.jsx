@@ -1,49 +1,101 @@
+import { useLayoutEffect, useRef } from "react";
 import PillButton from "@/components/PillButton";
 import SectionLabel from "@/components/SectionLabel";
-import TextReveal from "@/components/TextReveal";
+import { gsap, reducedMotion } from "@/lib/motion";
 
 const CONTACT_EMAIL = "hello@example.com";
 
 export default function Contact() {
+  const sectionRef = useRef(null);
+  const panelRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    const panel = panelRef.current;
+    if (!section || !panel || reducedMotion()) return undefined;
+
+    const context = gsap.context(() => {
+      gsap.fromTo(
+        panel,
+        { yPercent: 28, scale: 0.94, borderTopLeftRadius: 36, borderTopRightRadius: 36 },
+        {
+          yPercent: 0,
+          scale: 1,
+          borderTopLeftRadius: 0,
+          borderTopRightRadius: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "top 8%",
+            scrub: 0.65,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
+    }, section);
+
+    return () => context.revert();
+  }, []);
+
   return (
-    <section id="contact" className="py-20 md:py-28">
-      <div className="container-editorial">
-        <SectionLabel index="06">Contact</SectionLabel>
+    <section id="contact" ref={sectionRef} className="relative z-40 -mt-[18svh] overflow-hidden">
+      <div ref={panelRef} className="relative bg-[#14171c] py-20 text-background md:py-28">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-36 -top-32 h-[32rem] w-[32rem] rounded-full bg-accent/10 blur-3xl"
+      />
+      <div className="container-editorial relative">
+        <div className="flex flex-wrap items-center justify-between gap-5 border-b border-white/15 pb-6">
+          <SectionLabel
+            index="09"
+            className="[&>span:nth-child(2)]:text-background/55 [&>span:last-child]:text-background/70"
+          >
+            Contact
+          </SectionLabel>
+          <p className="text-xs uppercase tracking-[0.16em] text-background/50">
+            Have a good one in mind?
+          </p>
+        </div>
 
-        <TextReveal
-          as="h2"
-          lines={["Let's make", "something meaningful."]}
-          className="mt-8 text-[clamp(2.1rem,6vw,4.6rem)] font-light leading-[1.08] tracking-[-0.03em]"
-        />
+        <h2 className="mt-10 max-w-6xl text-[clamp(3rem,10vw,9rem)] font-black uppercase leading-[0.82] tracking-[-0.075em]">
+          Let&apos;s make
+          <br />
+          <span className="text-accent">something</span> meaningful.
+        </h2>
 
-        <div className="mt-12 grid gap-10 border-t border-border pt-10 md:mt-16 md:grid-cols-12 md:gap-8">
-          <div className="md:col-span-5">
-            <p className="text-sm text-muted-foreground">Start a conversation</p>
+        <div className="mt-12 grid gap-10 border-t border-white/15 pt-8 md:mt-16 md:grid-cols-12 md:gap-8 md:pt-10">
+          <div className="md:col-span-6">
+            <p className="text-sm text-background/55">Start a conversation</p>
             <a
               href={`mailto:${CONTACT_EMAIL}?subject=Project%20enquiry`}
               data-cursor="link"
-              className="mt-4 inline-block text-2xl tracking-[-0.02em] transition-colors duration-500 hover:text-accent md:text-3xl"
+              className="mt-3 inline-block break-all text-[clamp(1.4rem,3.8vw,3rem)] font-light tracking-[-0.045em] transition-colors duration-300 hover:text-accent"
             >
               {CONTACT_EMAIL}
             </a>
-            <div className="mt-8">
-              <PillButton variant="solid" href={`mailto:${CONTACT_EMAIL}?subject=Project%20enquiry`}>
+            <div className="mt-7">
+              <PillButton
+                variant="accent"
+                href={`mailto:${CONTACT_EMAIL}?subject=Project%20enquiry`}
+              >
                 Send a project enquiry
               </PillButton>
             </div>
           </div>
 
           <div className="md:col-span-5 md:col-start-8">
-            <p className="text-sm text-muted-foreground">A good place to start</p>
-            <p className="mt-4 max-w-md text-base leading-relaxed text-foreground/80">
-              Tell me what you’re building, who it’s for and what you’d like design to help you
-              achieve. If you have a timeline or budget in mind, include those too.
+            <p className="text-sm text-background/55">A good place to start</p>
+            <p className="mt-3 max-w-md text-base leading-relaxed text-background/80">
+              Tell me what you&apos;re building, who it&apos;s for and what you&apos;d like design to
+              help you achieve. A rough idea is more than enough to get started.
             </p>
-            <p className="mt-4 text-sm text-muted-foreground">
-              No polished brief needed — a few lines is enough to get the conversation started.
+            <p className="mt-4 text-sm leading-relaxed text-background/50">
+              Share your timeline or budget if you have one. We can work out the rest together.
             </p>
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

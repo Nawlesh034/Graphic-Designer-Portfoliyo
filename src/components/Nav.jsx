@@ -13,11 +13,19 @@ const LINKS = [
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [darkSurface, setDarkSurface] = useState(false);
   const go = useSectionNav();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => {
+      const headerLine = 40;
+      const isOnDarkSurface = [...document.querySelectorAll(".services-panel, .project-cave, footer")]
+        .some((section) => {
+          const bounds = section.getBoundingClientRect();
+          return bounds.top <= headerLine && bounds.bottom > headerLine;
+        });
+      setDarkSurface(isOnDarkSurface);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -46,12 +54,16 @@ export default function Nav() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-[100] transition-colors duration-500 ${
-          scrolled ? "border-b border-border bg-background/90 backdrop-blur-md" : "border-b border-transparent"
+        className={`fixed inset-x-0 top-0 z-[100] border-b border-transparent bg-transparent transition-colors duration-500 ${
+          darkSurface ? "text-background" : "text-foreground"
         }`}
       >
         <nav className="container-editorial flex h-[72px] items-center justify-between md:h-20">
-          <Link to="/" className="flex items-center gap-2.5" data-cursor="link">
+          <Link
+            to="/"
+            className="flex items-center gap-2.5"
+            data-cursor="link"
+          >
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-[11px] font-medium text-accent-foreground">
               A
             </span>
@@ -65,7 +77,9 @@ export default function Nav() {
                 type="button"
                 onClick={() => handleGo(link.id)}
                 data-cursor="link"
-                className="text-sm text-muted-foreground transition-colors duration-500 hover:text-foreground"
+                className={`text-sm transition-colors duration-500 ${
+                  darkSurface ? "text-background/75 hover:text-background" : "text-muted-foreground hover:text-foreground"
+                }`}
               >
                 {link.label}
               </button>
@@ -76,6 +90,7 @@ export default function Nav() {
             <PillButton
               as="button"
               onClick={() => handleGo("contact")}
+              variant={darkSurface ? "solid" : "outline"}
               className="hidden md:inline-flex"
               badgeClassName="h-9 w-9"
             >
@@ -85,7 +100,9 @@ export default function Nav() {
               type="button"
               onClick={() => setOpen(true)}
               aria-label="Open menu"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border transition-colors duration-500 hover:border-foreground lg:hidden"
+              className={`inline-flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-500 lg:hidden ${
+                darkSurface ? "border-white/30 hover:border-background" : "border-border hover:border-foreground"
+              }`}
             >
               <Menu className="h-4 w-4" />
             </button>

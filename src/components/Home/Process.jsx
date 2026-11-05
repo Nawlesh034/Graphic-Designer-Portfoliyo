@@ -1,7 +1,7 @@
-import { ArrowDown } from "lucide-react";
-import Reveal from "@/components/Reveal";
+import { useLayoutEffect, useRef } from "react";
+import { ArrowDownRight } from "lucide-react";
 import SectionLabel from "@/components/SectionLabel";
-import TextReveal from "@/components/TextReveal";
+import { gsap, reducedMotion } from "@/lib/motion";
 
 const STEPS = [
   {
@@ -27,41 +27,192 @@ const STEPS = [
 ];
 
 export default function Process() {
+  const sceneRef = useRef(null);
+  const contentRef = useRef(null);
+  const cardsRef = useRef([]);
+  const ringsRef = useRef(null);
+  const outroRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const scene = sceneRef.current;
+    const content = contentRef.current;
+    const cards = cardsRef.current;
+    const rings = ringsRef.current?.querySelectorAll(".cave-tunnel-ring");
+    const outro = outroRef.current;
+    if (!scene || !content || !cards.length || !rings?.length || !outro) return undefined;
+
+    const context = gsap.context(() => {
+      if (reducedMotion()) {
+        gsap.set(cards, { clearProps: "all" });
+        gsap.set(outro, { autoAlpha: 0 });
+        return;
+      }
+
+      gsap.set(content, { autoAlpha: 1 });
+      gsap.set(cards, { autoAlpha: 0, y: 80, scale: 0.78, rotation: 0 });
+      gsap.set(rings, { autoAlpha: 0, scale: 0.2, rotation: -12 });
+      gsap.set(outro, { autoAlpha: 0, scale: 0.72, y: 40 });
+
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: scene,
+          start: "top top",
+          end: "+=240%",
+          pin: true,
+          scrub: 1,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      timeline
+        .to(rings, {
+          autoAlpha: 0.58,
+          scale: 1.15,
+          rotation: 0,
+          stagger: 0.035,
+          ease: "power2.out",
+          duration: 0.18,
+        }, 0)
+        .to(rings, {
+          autoAlpha: 0.28,
+          scale: 2.2,
+          rotation: 12,
+          stagger: 0.025,
+          ease: "none",
+          duration: 0.58,
+        }, 0.24);
+
+      cards.forEach((card, index) => {
+        const fromLeft = index % 2 === 0;
+        const fromTop = index < 2;
+        const start = 0.12 + index * 0.1;
+
+        timeline
+          .fromTo(
+            card,
+            {
+              autoAlpha: 0,
+              x: fromLeft ? -120 : 120,
+              y: fromTop ? -70 : 70,
+              scale: 0.74,
+              rotation: fromLeft ? -6 : 6,
+            },
+            {
+              autoAlpha: 1,
+              x: 0,
+              y: 0,
+              scale: 1,
+              rotation: 0,
+              ease: "power2.out",
+              duration: 0.16,
+            },
+            start
+          )
+          .to(
+            card,
+            {
+              autoAlpha: 0,
+              x: fromLeft ? 150 : -150,
+              y: fromTop ? 150 : -150,
+              scale: 2.4,
+              rotation: fromLeft ? 8 : -8,
+              ease: "power3.in",
+              duration: 0.26,
+            },
+            0.58 + index * 0.035
+          );
+      });
+
+      timeline
+        .to(content, {
+          autoAlpha: 0,
+          scale: 1.42,
+          y: -55,
+          ease: "power3.in",
+          duration: 0.28,
+        }, 0.68)
+        .to(outro, {
+          autoAlpha: 1,
+          scale: 1,
+          y: 0,
+          ease: "power2.out",
+          duration: 0.16,
+        }, 0.78)
+        .to(outro, {
+          autoAlpha: 0,
+          scale: 2.2,
+          y: -45,
+          ease: "power3.in",
+          duration: 0.22,
+        }, 0.92)
+        .to(rings, { autoAlpha: 0, scale: 5.2, ease: "power3.in", duration: 0.28 }, 0.78);
+    }, scene);
+
+    return () => context.revert();
+  }, []);
+
   return (
-    <section className="py-20 md:py-28">
-      <div className="container-editorial">
+    <section
+      ref={sceneRef}
+      className="relative isolate flex h-[100svh] min-h-[42rem] items-center justify-center overflow-hidden bg-[#101113] text-background"
+      aria-label="Design process"
+    >
+      <div ref={ringsRef} className="cave-tunnel" aria-hidden="true">
+        <span className="cave-tunnel-ring" />
+        <span className="cave-tunnel-ring" />
+        <span className="cave-tunnel-ring" />
+      </div>
+
+      <p className="cave-backdrop" aria-hidden="true">LISTEN · MAKE · DELIVER</p>
+
+      <div ref={contentRef} className="container-editorial relative z-10">
         <div className="grid gap-8 md:grid-cols-12">
           <div className="md:col-span-2">
-            <SectionLabel index="04">The Process</SectionLabel>
+            <SectionLabel
+              index="07"
+              className="[&>span:nth-child(2)]:text-background/55 [&>span:last-child]:text-background/70"
+            >
+              The Process
+            </SectionLabel>
           </div>
           <div className="md:col-span-9 md:col-start-4">
-            <TextReveal
-              as="h2"
-              mode="words"
-              text="Good work comes from a clear process, honest conversations and room to explore."
-              stagger={0.035}
-              className="text-[clamp(1.35rem,2.7vw,2.4rem)] font-light leading-[1.35] tracking-[-0.02em]"
-            />
+            <h2 className="max-w-5xl text-[clamp(2.4rem,6.2vw,6rem)] font-black uppercase leading-[0.94] tracking-[-0.065em]">
+              A thoughtful process. A more memorable result.
+            </h2>
           </div>
         </div>
 
-        <div className="mt-14 grid gap-8 md:mt-20 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-3 sm:grid-cols-2 md:mt-16 lg:grid-cols-4">
           {STEPS.map((step, index) => (
-            <Reveal key={step.number} delay={index * 0.06} y={24}>
-              <article className="h-full border-t border-border pt-6">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">( {step.number} )</span>
-                  {index < STEPS.length - 1 ? (
-                    <ArrowDown className="h-4 w-4 text-accent" aria-hidden="true" />
-                  ) : null}
-                </div>
-                <h3 className="mt-8 text-xl font-normal tracking-[-0.01em] md:text-2xl">{step.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{step.description}</p>
-              </article>
-            </Reveal>
+            <article
+              key={step.number}
+              ref={(element) => { cardsRef.current[index] = element; }}
+              className="min-h-64 border border-white/15 bg-[#101113]/85 p-5 backdrop-blur-sm md:min-h-72 md:p-6"
+            >
+              <div className="flex items-center justify-between border-b border-white/15 pb-5">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-xs font-semibold text-accent-foreground">
+                  {step.number}
+                </span>
+                <ArrowDownRight className="h-5 w-5 text-accent" aria-hidden="true" />
+              </div>
+              <h3 className="mt-8 text-2xl font-medium tracking-[-0.035em] md:text-3xl">{step.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-background/60">{step.description}</p>
+            </article>
           ))}
         </div>
       </div>
+
+      <h3
+        ref={outroRef}
+        className="pointer-events-none absolute z-20 max-w-[90vw] text-center text-[clamp(2.5rem,9vw,8rem)] font-black uppercase leading-[0.82] tracking-[-0.07em]"
+      >
+        Let&apos;s make it matter
+      </h3>
+
+      <p className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2 text-[10px] uppercase tracking-[0.18em] text-background/50">
+        Scroll to move forward
+      </p>
     </section>
   );
 }

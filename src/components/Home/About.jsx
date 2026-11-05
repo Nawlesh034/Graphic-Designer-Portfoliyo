@@ -1,9 +1,11 @@
+import { useLayoutEffect, useRef } from "react";
 import ParallaxImage from "@/components/ParallaxImage";
 import PillButton from "@/components/PillButton";
 import Reveal from "@/components/Reveal";
 import SectionLabel from "@/components/SectionLabel";
 import TextReveal from "@/components/TextReveal";
 import useSectionNav from "@/Hooks/useSectionNav";
+import { gsap, reducedMotion } from "@/lib/motion";
 
 const STUDIO_IMAGE =
   "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=85";
@@ -18,10 +20,39 @@ const CAPABILITIES = [
 ];
 
 export default function About() {
+  const sectionRef = useRef(null);
   const go = useSectionNav();
 
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    const panel = section?.parentElement;
+    if (!section || !panel || reducedMotion()) return undefined;
+
+    const context = gsap.context(() => {
+      gsap.fromTo(
+        panel,
+        { xPercent: 12, yPercent: 10, scale: 0.96, autoAlpha: 0 },
+        {
+          xPercent: 0,
+          yPercent: 0,
+          scale: 1,
+          autoAlpha: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 98%",
+            end: "top 45%",
+            scrub: 0.8,
+          },
+        }
+      );
+    }, section);
+
+    return () => context.revert();
+  }, []);
+
   return (
-    <section id="about" className="py-20 md:py-28">
+    <section ref={sectionRef} id="about" className="overflow-x-clip py-20 md:py-28">
       <div className="container-editorial">
         <div className="grid gap-8 md:grid-cols-12">
           <div className="md:col-span-2">

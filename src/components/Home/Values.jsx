@@ -1,7 +1,9 @@
+import { useLayoutEffect, useRef } from "react";
 import { MessageSquare, Receipt, Shuffle, Sparkles } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import SectionLabel from "@/components/SectionLabel";
 import TextReveal from "@/components/TextReveal";
+import { gsap, reducedMotion } from "@/lib/motion";
 
 const VALUES = [
   {
@@ -27,12 +29,45 @@ const VALUES = [
 ];
 
 export default function Values() {
+  const sectionRef = useRef(null);
+  const panelRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    const panel = panelRef.current;
+    if (!section || !panel || reducedMotion()) return undefined;
+
+    const context = gsap.context(() => {
+      gsap.fromTo(
+        panel,
+        { yPercent: 14, scale: 0.96, borderTopLeftRadius: 28, borderTopRightRadius: 28 },
+        {
+          yPercent: 0,
+          scale: 1,
+          borderTopLeftRadius: 0,
+          borderTopRightRadius: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "top 15%",
+            scrub: 0.8,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
+    }, section);
+
+    return () => context.revert();
+  }, []);
+
   return (
-    <section className="py-20 md:py-28">
-      <div className="container-editorial">
+    <section ref={sectionRef} className="relative z-10">
+      <div ref={panelRef} className="bg-background py-20 md:py-28">
+        <div className="container-editorial">
         <div className="grid gap-8 md:grid-cols-12">
           <div className="md:col-span-2">
-            <SectionLabel index="05">How I Work</SectionLabel>
+            <SectionLabel index="08">How I Work</SectionLabel>
           </div>
           <div className="md:col-span-9 md:col-start-4">
             <TextReveal
@@ -59,6 +94,7 @@ export default function Values() {
               </div>
             </Reveal>
           ))}
+        </div>
         </div>
       </div>
     </section>
