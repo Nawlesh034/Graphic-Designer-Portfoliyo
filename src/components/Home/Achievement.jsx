@@ -18,6 +18,7 @@ export default function Achievement() {
     if (!section || !shade || !marquee || !track || reducedMotion()) return undefined;
 
     const context = gsap.context(() => {
+      const intro = section.querySelectorAll("[data-achievement-intro]");
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: section,
@@ -31,6 +32,18 @@ export default function Achievement() {
       });
 
       timeline
+        .fromTo(
+          intro,
+          { autoAlpha: 0, y: 38 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            stagger: 0.08,
+            ease: "power3.out",
+            duration: 0.22,
+          },
+          0
+        )
         .to(shade, { opacity: 0.16, ease: "none", duration: 1 }, 0)
         .to(marquee, { y: () => -window.innerHeight * 0.7, ease: "none", duration: 1 }, 0)
         .to(track, { x: () => -window.innerWidth * 0.75, ease: "none", duration: 1 }, 0);
@@ -49,10 +62,10 @@ export default function Achievement() {
               <SectionLabel index="04">Achievement</SectionLabel>
             </div>
             <div className="md:col-span-8 md:col-start-4">
-              <h2 className="max-w-3xl text-[clamp(1.7rem,4vw,3.8rem)] font-light leading-[1.14] tracking-[-0.04em]">
+              <h2 data-achievement-intro className="max-w-3xl text-[clamp(1.7rem,4vw,3.8rem)] font-light leading-[1.14] tracking-[-0.04em]">
                 Good work grows from listening closely, thinking clearly and making with care.
               </h2>
-              <p className="mt-6 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base">
+              <p data-achievement-intro className="mt-6 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base">
                 Each project is an opportunity to turn a distinct point of view into a visual
                 language that feels clear, useful and memorable.
               </p>

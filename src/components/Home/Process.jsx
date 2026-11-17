@@ -66,6 +66,18 @@ export default function Process() {
       });
 
       timeline
+        .fromTo(
+          content.querySelector("h2"),
+          { autoAlpha: 0, y: 56, scale: 0.94 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            ease: "power3.out",
+            duration: 0.28,
+          },
+          0
+        )
         .to(rings, {
           autoAlpha: 0.58,
           scale: 1.15,
@@ -170,7 +182,7 @@ export default function Process() {
         <div className="grid gap-8 md:grid-cols-12">
           <div className="md:col-span-2">
             <SectionLabel
-              index="07"
+              index="08"
               className="[&>span:nth-child(2)]:text-background/55 [&>span:last-child]:text-background/70"
             >
               The Process

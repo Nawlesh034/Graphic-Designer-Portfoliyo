@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import Reveal from "@/components/Reveal";
 import SectionLabel from "@/components/SectionLabel";
 import TextReveal from "@/components/TextReveal";
@@ -6,9 +6,20 @@ import ProjectCard from "@/components/Home/ProjectCard";
 import { projects } from "@/lib/projects";
 import { gsap, reducedMotion } from "@/lib/motion";
 
+const FILTERS = [
+  { label: "All work", matches: () => true },
+  { label: "Identity", matches: (project) => project.services.some((service) => service.toLowerCase().includes("identity")) },
+  { label: "Packaging", matches: (project) => project.services.includes("Packaging") },
+  { label: "Editorial", matches: (project) => project.services.some((service) => service.toLowerCase().includes("editorial")) },
+  { label: "Campaign", matches: (project) => project.services.some((service) => service.toLowerCase().includes("campaign")) },
+];
+
 export default function SelectedWorks() {
   const sectionRef = useRef(null);
   const galleryRef = useRef(null);
+  const [activeFilter, setActiveFilter] = useState("All work");
+  const currentFilter = FILTERS.find((filter) => filter.label === activeFilter) ?? FILTERS[0];
+  const visibleProjects = projects.filter(currentFilter.matches);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -77,8 +88,30 @@ export default function SelectedWorks() {
           </Reveal>
         </div>
 
+        <div className="mt-10 flex flex-wrap items-center gap-2 border-y border-border py-4" aria-label="Filter selected work">
+          <span className="mr-2 text-xs uppercase tracking-[0.14em] text-muted-foreground">Explore by</span>
+          {FILTERS.map((filter) => (
+            <button
+              key={filter.label}
+              type="button"
+              onClick={() => setActiveFilter(filter.label)}
+              aria-pressed={activeFilter === filter.label}
+              className={`rounded-full border px-4 py-2 text-xs transition-colors duration-300 ${
+                activeFilter === filter.label
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-border text-muted-foreground hover:border-foreground hover:text-foreground"
+              }`}
+            >
+              {filter.label}
+            </button>
+          ))}
+          <span className="ml-auto text-xs text-muted-foreground" aria-live="polite">
+            {visibleProjects.length} {visibleProjects.length === 1 ? "project" : "projects"}
+          </span>
+        </div>
+
         <div ref={galleryRef} className="mt-12 grid gap-x-8 gap-y-14 md:mt-16 md:grid-cols-12">
-          {projects.map((project, i) => (
+          {visibleProjects.map((project, i) => (
             <ProjectCard key={project.slug} project={project} index={i} />
           ))}
         </div>

@@ -1,10 +1,15 @@
+import { useLayoutEffect } from "react";
 import { Outlet } from "react-router-dom";
 import CustomCursor from "@/components/CustomCursor";
+import OpeningCurtain from "@/components/OpeningCurtain";
 import ScrollProgress from "@/components/ScrollProgress";
 import Nav from "@/components/Nav";
 import SiteFooter from "@/components/SiteFooter";
+import { initSmoothScroll } from "@/lib/motion";
 
 export default function Layout() {
+  useLayoutEffect(() => initSmoothScroll(), []);
+
   return (
     <div className="relative min-h-screen">
       <a
@@ -13,6 +18,7 @@ export default function Layout() {
       >
         Skip to content
       </a>
+      <OpeningCurtain />
       <CustomCursor />
       <ScrollProgress />
       <Nav />

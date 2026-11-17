@@ -32,7 +32,13 @@ export default function ProjectCave() {
     }
 
     const context = gsap.context(() => {
-      gsap.set(panel, { scale: 0.34, borderRadius: 28 });
+      gsap.set(panel, {
+        yPercent: 62,
+        scale: 0.48,
+        rotationX: 8,
+        borderRadius: 28,
+        transformOrigin: "center center",
+      });
       gsap.set(content, { autoAlpha: 0, scale: 0.82, y: 32 });
       gsap.set(cards, { autoAlpha: 0, scale: 0.62 });
       gsap.set(tunnelRings, { autoAlpha: 0, scale: 0.22, rotation: -8 });
@@ -51,9 +57,20 @@ export default function ProjectCave() {
       });
 
       timeline
-        .to(panel, { scale: 1.19, borderRadius: 0, ease: "none", duration: 0.28 }, 0)
-        .to(content, { autoAlpha: 1, scale: 1, y: 0, ease: "power2.out", duration: 0.18 }, 0.13)
-        .to(content, { autoAlpha: 0, scale: 0.92, y: -24, ease: "power2.in", duration: 0.12 }, 0.48)
+        .to(
+          panel,
+          {
+            yPercent: 0,
+            scale: 1.08,
+            rotationX: 0,
+            borderRadius: 0,
+            ease: "power2.out",
+            duration: 0.34,
+          },
+          0
+        )
+        .to(content, { autoAlpha: 1, scale: 1, y: 0, ease: "power2.out", duration: 0.18 }, 0.18)
+        .to(content, { autoAlpha: 0, scale: 0.92, y: -24, ease: "power2.in", duration: 0.12 }, 0.49)
         .to(panel, { scale: 3.4, autoAlpha: 0, ease: "power2.in", duration: 0.36 }, 0.56)
         .to(tunnelRings, {
           autoAlpha: 0.65,

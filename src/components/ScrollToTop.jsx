@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation, useNavigationType } from "react-router-dom";
+import { scrollToId, scrollToTop } from "@/lib/motion";
 
 const getHashId = (hash) => {
   const rawId = hash.slice(1);
@@ -21,12 +22,12 @@ export default function ScrollToTop() {
     if (hash) {
       const id = getHashId(hash);
       const timer = window.setTimeout(() => {
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+        scrollToId(id);
       }, 50);
       return () => window.clearTimeout(timer);
     }
 
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    scrollToTop();
   }, [pathname, hash, navigationType]);
 
   return null;

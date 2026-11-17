@@ -64,7 +64,36 @@ export default function Services() {
     if (!section || !list || reducedMotion()) return undefined;
 
     const rows = Array.from(list.querySelectorAll("[data-service-row]"));
+    const intro = Array.from(section.querySelectorAll("[data-services-intro]"));
     const context = gsap.context(() => {
+      gsap.fromTo(
+        section,
+        { yPercent: 24, scale: 0.96, borderTopLeftRadius: 36, borderTopRightRadius: 36 },
+        {
+          yPercent: 0,
+          scale: 1,
+          borderTopLeftRadius: 0,
+          borderTopRightRadius: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "top 10%",
+            scrub: 0.8,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
+
+      gsap.from(intro, {
+        autoAlpha: 0,
+        y: 30,
+        stagger: 0.1,
+        duration: 0.9,
+        ease: "power3.out",
+        scrollTrigger: { trigger: section, start: "top 78%", once: true },
+      });
+
       rows.forEach((row) => {
         gsap.fromTo(
           row,
@@ -124,12 +153,12 @@ export default function Services() {
             <SectionLabel index="03" className="[&>span:last-child]:text-background/60">
               Services
             </SectionLabel>
-            <h2 className="mt-8 max-w-2xl text-2xl font-light leading-snug tracking-[-0.02em] text-background/80 md:text-3xl">
+            <h2 data-services-intro className="mt-8 max-w-2xl text-2xl font-light leading-snug tracking-[-0.02em] text-background/80 md:text-3xl">
               Clear thinking, made visible.
               <span className="text-accent"> What can we make together?</span>
             </h2>
           </div>
-          <p className="max-w-xs text-sm leading-relaxed text-background/55">
+          <p data-services-intro className="max-w-xs text-sm leading-relaxed text-background/55">
             Choose a starting point. Each service can stand alone or become part of a larger system.
           </p>
         </div>

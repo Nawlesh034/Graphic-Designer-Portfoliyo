@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { MessageSquare, Receipt, Shuffle, Sparkles } from "lucide-react";
 import Reveal from "@/components/Reveal";
+import ScrollHandoff from "@/components/ScrollHandoff";
 import SectionLabel from "@/components/SectionLabel";
 import TextReveal from "@/components/TextReveal";
 import { gsap, reducedMotion } from "@/lib/motion";
@@ -62,12 +63,13 @@ export default function Values() {
   }, []);
 
   return (
+    <ScrollHandoff>
     <section ref={sectionRef} className="relative z-10">
       <div ref={panelRef} className="bg-background py-20 md:py-28">
         <div className="container-editorial">
         <div className="grid gap-8 md:grid-cols-12">
           <div className="md:col-span-2">
-            <SectionLabel index="08">How I Work</SectionLabel>
+            <SectionLabel index="07">How I Work</SectionLabel>
           </div>
           <div className="md:col-span-9 md:col-start-4">
             <TextReveal
@@ -98,5 +100,6 @@ export default function Values() {
         </div>
       </div>
     </section>
+    </ScrollHandoff>
   );
 }

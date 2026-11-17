@@ -1,4 +1,5 @@
 import { Children } from "react";
+import ScrollHandoff from "@/components/ScrollHandoff";
 
 /**
  * Sticky panels overlap naturally as each section scrolls into view.
@@ -15,7 +16,7 @@ export default function StackedSections({ children }) {
           ].filter(Boolean).join(" ")}
           style={{ zIndex: i + 1 }}
         >
-          {child}
+          <ScrollHandoff>{child}</ScrollHandoff>
         </div>
       ))}
     </div>

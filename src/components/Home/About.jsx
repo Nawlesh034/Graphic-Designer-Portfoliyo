@@ -25,7 +25,7 @@ export default function About() {
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
-    const panel = section?.parentElement;
+    const panel = section?.closest(".stack-panel");
     if (!section || !panel || reducedMotion()) return undefined;
 
     const context = gsap.context(() => {

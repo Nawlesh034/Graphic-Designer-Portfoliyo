@@ -15,31 +15,44 @@ export default function Contact() {
     if (!section || !panel || reducedMotion()) return undefined;
 
     const context = gsap.context(() => {
-      gsap.fromTo(
-        panel,
-        { yPercent: 28, scale: 0.94, borderTopLeftRadius: 36, borderTopRightRadius: 36 },
-        {
-          yPercent: 0,
-          scale: 1,
-          borderTopLeftRadius: 0,
-          borderTopRightRadius: 0,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top bottom",
-            end: "top 8%",
-            scrub: 0.65,
-            invalidateOnRefresh: true,
+      const intro = panel.querySelectorAll("[data-contact-intro]");
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top bottom",
+          end: "top 8%",
+          scrub: 0.65,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      timeline
+        .fromTo(
+          panel,
+          { yPercent: 28, scale: 0.94, borderTopLeftRadius: 36, borderTopRightRadius: 36 },
+          {
+            yPercent: 0,
+            scale: 1,
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+            ease: "none",
+            duration: 1,
           },
-        }
-      );
+          0
+        )
+        .fromTo(
+          intro,
+          { autoAlpha: 0, y: 42 },
+          { autoAlpha: 1, y: 0, stagger: 0.14, ease: "power3.out", duration: 0.6 },
+          0.2
+        );
     }, section);
 
     return () => context.revert();
   }, []);
 
   return (
-    <section id="contact" ref={sectionRef} className="relative z-40 -mt-[18svh] overflow-hidden">
+    <section id="contact" ref={sectionRef} className="relative z-40 overflow-hidden">
       <div ref={panelRef} className="relative bg-[#14171c] py-20 text-background md:py-28">
       <div
         aria-hidden="true"
@@ -58,13 +71,13 @@ export default function Contact() {
           </p>
         </div>
 
-        <h2 className="mt-10 max-w-6xl text-[clamp(3rem,10vw,9rem)] font-black uppercase leading-[0.82] tracking-[-0.075em]">
+        <h2 data-contact-intro className="mt-10 max-w-6xl text-[clamp(3rem,10vw,9rem)] font-black uppercase leading-[0.82] tracking-[-0.075em]">
           Let&apos;s make
           <br />
           <span className="text-accent">something</span> meaningful.
         </h2>
 
-        <div className="mt-12 grid gap-10 border-t border-white/15 pt-8 md:mt-16 md:grid-cols-12 md:gap-8 md:pt-10">
+        <div data-contact-intro className="mt-12 grid gap-10 border-t border-white/15 pt-8 md:mt-16 md:grid-cols-12 md:gap-8 md:pt-10">
           <div className="md:col-span-6">
             <p className="text-sm text-background/55">Start a conversation</p>
             <a

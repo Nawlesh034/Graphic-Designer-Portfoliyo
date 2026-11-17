@@ -23,29 +23,70 @@ export default function SiteFooter() {
     if (!footer || !panel || reducedMotion()) return undefined;
 
     const context = gsap.context(() => {
-      gsap.fromTo(
-        panel,
-        {
-          yPercent: 100,
-          borderTopLeftRadius: 40,
-          borderTopRightRadius: 40,
-          boxShadow: "0 -24px 80px rgb(0 0 0 / 0.3)",
+      const slogan = panel.querySelectorAll("[data-footer-slogan]");
+      const arrows = panel.querySelectorAll("[data-footer-arrow]");
+      const details = panel.querySelectorAll("[data-footer-detail]");
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: footer,
+          start: "top bottom",
+          end: "top top",
+          scrub: 0.7,
+          invalidateOnRefresh: true,
         },
-        {
-          yPercent: 0,
-          borderTopLeftRadius: 0,
-          borderTopRightRadius: 0,
-          boxShadow: "0 0 0 rgb(0 0 0 / 0)",
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: footer,
-            start: "top bottom",
-            end: "top top",
-            scrub: 0.7,
-            invalidateOnRefresh: true,
+      });
+
+      timeline
+        .fromTo(
+          panel,
+          {
+            yPercent: 100,
+            borderTopLeftRadius: 40,
+            borderTopRightRadius: 40,
+            boxShadow: "0 -24px 80px rgb(0 0 0 / 0.3)",
           },
-        }
-      );
+          {
+            yPercent: 0,
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+            boxShadow: "0 0 0 rgb(0 0 0 / 0)",
+            ease: "power2.out",
+            duration: 1,
+          },
+          0
+        )
+        .fromTo(
+          slogan,
+          { yPercent: 120, rotateX: -45, autoAlpha: 0, transformOrigin: "center bottom" },
+          {
+            yPercent: 0,
+            rotateX: 0,
+            autoAlpha: 1,
+            stagger: 0.08,
+            ease: "power3.out",
+            duration: 0.58,
+          },
+          0.18
+        )
+        .fromTo(
+          arrows,
+          { scale: 0.2, rotation: -135, autoAlpha: 0 },
+          {
+            scale: 1,
+            rotation: 0,
+            autoAlpha: 1,
+            stagger: 0.1,
+            ease: "back.out(1.7)",
+            duration: 0.48,
+          },
+          0.3
+        )
+        .fromTo(
+          details,
+          { y: 48, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, stagger: 0.12, ease: "power3.out", duration: 0.5 },
+          0.48
+        );
     }, footer);
 
     return () => context.revert();
@@ -67,24 +108,24 @@ export default function SiteFooter() {
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-5 py-10 md:gap-x-6 md:py-12">
-            <span className="font-[Impact,'Arial_Narrow',sans-serif] text-[clamp(2rem,7.4vw,7.5rem)] font-black uppercase leading-[0.85] tracking-[-0.055em]">
+            <span data-footer-slogan className="font-[Impact,'Arial_Narrow',sans-serif] text-[clamp(2rem,7.4vw,7.5rem)] font-black uppercase leading-[0.85] tracking-[-0.055em]">
               Product
             </span>
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center bg-accent text-accent-foreground md:h-16 md:w-16">
+            <span data-footer-arrow className="flex h-10 w-10 shrink-0 items-center justify-center bg-accent text-accent-foreground md:h-16 md:w-16">
               <ArrowUpRight className="h-7 w-7 md:h-9 md:w-9" aria-hidden="true" />
             </span>
-            <span className="font-[Impact,'Arial_Narrow',sans-serif] text-[clamp(2rem,7.4vw,7.5rem)] font-black uppercase leading-[0.85] tracking-[-0.055em]">
+            <span data-footer-slogan className="font-[Impact,'Arial_Narrow',sans-serif] text-[clamp(2rem,7.4vw,7.5rem)] font-black uppercase leading-[0.85] tracking-[-0.055em]">
               Design
             </span>
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center bg-accent text-accent-foreground md:h-16 md:w-16">
+            <span data-footer-arrow className="flex h-10 w-10 shrink-0 items-center justify-center bg-accent text-accent-foreground md:h-16 md:w-16">
               <ArrowUpRight className="h-7 w-7 md:h-9 md:w-9" aria-hidden="true" />
             </span>
-            <span className="font-[Impact,'Arial_Narrow',sans-serif] text-[clamp(2rem,7.4vw,7.5rem)] font-black uppercase leading-[0.85] tracking-[-0.055em]">
+            <span data-footer-slogan className="font-[Impact,'Arial_Narrow',sans-serif] text-[clamp(2rem,7.4vw,7.5rem)] font-black uppercase leading-[0.85] tracking-[-0.055em]">
               Partner
             </span>
           </div>
 
-          <div className="grid gap-12 border-t border-white/15 py-10 md:grid-cols-12 md:gap-8 md:py-14">
+          <div data-footer-detail className="grid gap-12 border-t border-white/15 py-10 md:grid-cols-12 md:gap-8 md:py-14">
             <div className="md:col-span-6">
               <p className="text-xs text-white/55">Have a project in mind?</p>
               <a

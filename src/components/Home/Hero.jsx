@@ -10,6 +10,13 @@ const PHRASES = [
   "Creative Thinker.",
 ];
 
+const HEADLINE_VARIATIONS = [
+  ["turn", "ideas", "visual stories."],
+  ["shape", "concepts", "brand stories."],
+  ["craft", "ambition", "bold identities."],
+  ["translate", "visions", "fresh thinking."],
+];
+
 export default function Hero() {
   const sectionRef = useRef(null);
 
@@ -32,6 +39,42 @@ export default function Hero() {
         delay: 0.12,
         ease: "power4.out",
       });
+
+      const flipWords = Array.from(section.querySelectorAll("[data-hero-flip]"));
+      if (flipWords.length) {
+        gsap.set(flipWords, { transformPerspective: 900, transformOrigin: "center center" });
+
+        const flipTimeline = gsap.timeline({ repeat: -1, repeatDelay: 0.35, delay: 2.2 });
+        flipTimeline
+          .to(flipWords, {
+            rotationY: 82,
+            autoAlpha: 0,
+            duration: 0.42,
+            ease: "power2.in",
+            stagger: 0.06,
+          })
+          .call(() => {
+            const currentIndex = HEADLINE_VARIATIONS.findIndex(
+              ([verb, idea, story]) =>
+                flipWords[0].textContent === verb &&
+                flipWords[1].textContent === idea &&
+                flipWords[2].textContent === story
+            );
+            const nextVariation = HEADLINE_VARIATIONS[(currentIndex + 1) % HEADLINE_VARIATIONS.length];
+            flipWords.forEach((word, index) => {
+              word.textContent = nextVariation[index];
+            });
+          })
+          .set(flipWords, { rotationY: -82 })
+          .to(flipWords, {
+            rotationY: 0,
+            autoAlpha: 1,
+            duration: 0.52,
+            ease: "back.out(1.35)",
+            stagger: 0.06,
+          })
+          .to({}, { duration: 1.45 });
+      }
     }, section);
 
     return () => ctx.revert();
@@ -64,13 +107,13 @@ export default function Hero() {
           className="hero-display mt-12 max-w-[90rem] md:mt-20"
         >
           <span className="line-mask block">
-            <span className="inline-block" data-hero-line>I turn</span>
+            <span className="inline-block" data-hero-line>I <span data-hero-flip>turn</span></span>
           </span>
           <span className="line-mask block">
-            <span className="inline-block" data-hero-line>ideas into</span>
+            <span className="inline-block" data-hero-line><span data-hero-flip>ideas</span> into</span>
           </span>
           <span className="line-mask block text-accent">
-            <span className="inline-block" data-hero-line>visual stories.</span>
+            <span className="inline-block" data-hero-line><span data-hero-flip>visual stories.</span></span>
           </span>
         </h1>
 

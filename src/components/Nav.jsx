@@ -19,7 +19,11 @@ export default function Nav() {
   useEffect(() => {
     const onScroll = () => {
       const headerLine = 40;
-      const isOnDarkSurface = [...document.querySelectorAll(".services-panel, .project-cave, footer")]
+      const isOnDarkSurface = [
+        ...document.querySelectorAll(
+          ".services-panel, .project-cave, .achievement-section, [aria-label='Design process'], #contact, footer"
+        ),
+      ]
         .some((section) => {
           const bounds = section.getBoundingClientRect();
           return bounds.top <= headerLine && bounds.bottom > headerLine;
