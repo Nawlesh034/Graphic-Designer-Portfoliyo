@@ -38,16 +38,27 @@ export function finePointer() {
   return window.matchMedia("(pointer: fine)").matches;
 }
 
-export function scrollToId(id) {
+export function scrollToId(id, { immediate = false } = {}) {
   const target = document.getElementById(id);
   if (!target) return;
 
   if (lenisInstance && !reducedMotion()) {
-    lenisInstance.scrollTo(target, { offset: -80 });
+    lenisInstance.scrollTo(target, { offset: -80, immediate });
     return;
   }
 
-  target.scrollIntoView({ behavior: reducedMotion() ? "instant" : "smooth" });
+  target.scrollIntoView({
+    behavior: immediate || reducedMotion() ? "instant" : "smooth",
+  });
+}
+
+export function transitionToSection(id) {
+  if (reducedMotion() || typeof document.startViewTransition !== "function") {
+    scrollToId(id);
+    return;
+  }
+
+  document.startViewTransition(() => scrollToId(id, { immediate: true }));
 }
 
 export function scrollToTop() {

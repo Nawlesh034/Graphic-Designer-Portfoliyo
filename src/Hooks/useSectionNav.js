@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { scrollToId } from "@/lib/motion";
+import { transitionToSection } from "@/lib/motion";
 
 export default function useSectionNav() {
   const { pathname } = useLocation();
@@ -7,7 +7,7 @@ export default function useSectionNav() {
 
   return (id) => {
     if (pathname === "/") {
-      scrollToId(id);
+      transitionToSection(id);
       return;
     }
 

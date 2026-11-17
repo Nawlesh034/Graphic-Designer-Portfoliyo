@@ -2,6 +2,7 @@ import About from "@/components/Home/About";
 import Achievement from "@/components/Home/Achievement";
 import Contact from "@/components/Home/Contact";
 import Hero from "@/components/Home/Hero";
+import IdentityWall from "@/components/Home/IdentityWall";
 import ProjectCave from "@/components/ProjectCave";
 import Process from "@/components/Home/Process";
 import ProjectMotion from "@/components/Home/ProjectMotion";
@@ -20,6 +21,7 @@ export default function Home() {
         <About />
         <SelectedWorks />
       </StackedSections>
+      <IdentityWall />
       <ScrollHandoff className="relative z-10 -mt-[12svh]">
         <Services />
       </ScrollHandoff>
