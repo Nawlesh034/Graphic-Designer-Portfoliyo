@@ -200,7 +200,7 @@ export default function Process() {
             <article
               key={step.number}
               ref={(element) => { cardsRef.current[index] = element; }}
-              className="min-h-64 border border-white/15 bg-[#101113]/85 p-5 backdrop-blur-sm md:min-h-72 md:p-6"
+              className="min-h-64 border border-white/15 bg-[#101113]/85 p-5 md:min-h-72 md:p-6"
             >
               <div className="flex items-center justify-between border-b border-white/15 pb-5">
                 <span className="flex h-9 w-9 items-center justify-center rounded-full bg-accent text-xs font-semibold text-accent-foreground">

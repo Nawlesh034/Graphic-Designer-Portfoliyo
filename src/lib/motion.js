@@ -15,7 +15,7 @@ export function reducedMotion() {
 export function initSmoothScroll() {
   if (reducedMotion() || lenisInstance) return () => {};
 
-  const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1, anchors: true });
+  const lenis = new Lenis({ lerp: 0.12, wheelMultiplier: 0.9, anchors: true });
   const updateScrollTrigger = () => ScrollTrigger.update();
   const updateLenis = (time) => lenis.raf(time * 1000);
 

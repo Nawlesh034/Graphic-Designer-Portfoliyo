@@ -11,7 +11,7 @@ export default function Reveal({
   y = 34,
   duration = 1.15,
   start = "top 88%",
-  once = true,
+  once = false,
   as: Tag = "div",
   style,
 }) {
@@ -28,7 +28,12 @@ export default function Reveal({
         duration,
         delay,
         ease: "power3.out",
-        scrollTrigger: { trigger: el, start, once },
+        scrollTrigger: {
+          trigger: el,
+          start,
+          once,
+          toggleActions: once ? "play none none none" : "play none none reverse",
+        },
       });
     }, el);
 

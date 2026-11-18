@@ -18,7 +18,7 @@ export default function TextReveal({
   scrub = false,
   start = "top 85%",
   end = "top 40%",
-  once = true,
+  once = false,
 }) {
   const ref = useRef(null);
   const items = lines ?? (text ? text.split(" ") : []);
@@ -43,7 +43,14 @@ export default function TextReveal({
         delay,
         stagger,
         ease: "power4.out",
-        scrollTrigger: { trigger: el, start, end, once, scrub },
+        scrollTrigger: {
+          trigger: el,
+          start,
+          end,
+          once,
+          scrub,
+          toggleActions: once ? "play none none none" : "play none none reverse",
+        },
       });
     }, el);
 
