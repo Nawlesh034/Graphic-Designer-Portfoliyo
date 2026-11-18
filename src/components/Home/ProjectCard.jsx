@@ -80,7 +80,7 @@ export default function ProjectCard({ project, index = 0 }) {
         {
           yPercent: 5,
           ease: "none",
-          scrollTrigger: { trigger: card, start: "top bottom", end: "bottom top", scrub: 1 },
+          scrollTrigger: { trigger: card, start: "top bottom", end: "bottom top", scrub: true },
         }
       );
     }, card);

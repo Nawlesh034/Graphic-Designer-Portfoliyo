@@ -15,11 +15,12 @@ export function reducedMotion() {
 export function initSmoothScroll() {
   if (reducedMotion() || lenisInstance) return () => {};
 
-  const lenis = new Lenis({ lerp: 0.15, wheelMultiplier: 1.1, anchors: true });
+  const lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1, anchors: true });
   const updateScrollTrigger = () => ScrollTrigger.update();
   const updateLenis = (time) => lenis.raf(time * 1000);
 
   lenis.on("scroll", updateScrollTrigger);
+  gsap.ticker.lagSmoothing(0);
   gsap.ticker.add(updateLenis);
   lenisInstance = lenis;
 

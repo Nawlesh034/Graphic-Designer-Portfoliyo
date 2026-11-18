@@ -59,7 +59,7 @@ export default function Process() {
           start: "top top",
           end: "+=240%",
           pin: true,
-          scrub: 1,
+          scrub: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },

@@ -33,7 +33,7 @@ export default function ParallaxImage({
         {
           yPercent: strength,
           ease: "none",
-          scrollTrigger: { trigger: wrap, start: "top bottom", end: "bottom top", scrub: 1 },
+          scrollTrigger: { trigger: wrap, start: "top bottom", end: "bottom top", scrub: true },
         }
       );
 

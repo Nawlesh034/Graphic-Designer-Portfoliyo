@@ -38,7 +38,7 @@ export default function SelectedWorks() {
             trigger: section,
             start: "top 88%",
             end: "top 35%",
-            scrub: 0.8,
+            scrub: true,
           },
         }
       );
@@ -57,7 +57,7 @@ export default function SelectedWorks() {
               trigger: section,
               start: "bottom bottom",
               end: "bottom top",
-              scrub: 0.8,
+              scrub: true,
               invalidateOnRefresh: true,
             },
           }

@@ -42,7 +42,7 @@ export default function About() {
             trigger: section,
             start: "top 98%",
             end: "top 45%",
-            scrub: 0.8,
+            scrub: true,
           },
         }
       );

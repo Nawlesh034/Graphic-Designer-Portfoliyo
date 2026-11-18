@@ -70,7 +70,7 @@ export default function ProjectMotion() {
             return `+=${window.innerHeight * (1.32 + (cards.length - 1) * stagger)}`;
           },
           pin: true,
-          scrub: 1.2,
+          scrub: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },

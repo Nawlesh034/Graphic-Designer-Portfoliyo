@@ -14,7 +14,7 @@ export default function ScrollHandoff({ children, className = "" }) {
           trigger: element,
           start: "top bottom",
           end: "bottom top",
-          scrub: 0.8,
+          scrub: true,
           invalidateOnRefresh: true,
         },
       })

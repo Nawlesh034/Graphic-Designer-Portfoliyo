@@ -24,7 +24,7 @@ export default function Achievement() {
           trigger: section,
           start: "top top",
           end: "+=100%",
-          scrub: 0.8,
+          scrub: true,
           pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,

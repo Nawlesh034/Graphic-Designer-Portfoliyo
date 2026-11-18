@@ -52,7 +52,7 @@ export default function Values() {
             trigger: section,
             start: "top bottom",
             end: "top 15%",
-            scrub: 0.8,
+            scrub: true,
             invalidateOnRefresh: true,
           },
         }

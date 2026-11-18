@@ -49,7 +49,7 @@ export default function ProjectCave() {
           trigger: scene,
           start: "top top",
           end: "+=300%",
-          scrub: 1,
+          scrub: true,
           pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,

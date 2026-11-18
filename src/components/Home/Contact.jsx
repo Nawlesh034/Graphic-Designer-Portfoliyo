@@ -21,7 +21,7 @@ export default function Contact() {
           trigger: section,
           start: "top bottom",
           end: "top 8%",
-          scrub: 0.65,
+          scrub: true,
           invalidateOnRefresh: true,
         },
       });

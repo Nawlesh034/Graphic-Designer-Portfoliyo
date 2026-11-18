@@ -31,7 +31,7 @@ export default function SiteFooter() {
           trigger: footer,
           start: "top bottom",
           end: "top top",
-          scrub: 0.7,
+          scrub: true,
           invalidateOnRefresh: true,
         },
       });

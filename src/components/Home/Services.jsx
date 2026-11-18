@@ -98,7 +98,7 @@ export default function Services() {
             trigger: section,
             start: "top bottom",
             end: "top 10%",
-            scrub: 0.8,
+            scrub: true,
             invalidateOnRefresh: true,
           },
         }
@@ -124,7 +124,7 @@ export default function Services() {
               trigger: row,
               start: "top 94%",
               end: "top 58%",
-              scrub: 0.6,
+              scrub: true,
             },
           }
         );
